@@ -1,24 +1,17 @@
-name: POC API Sync on PR
+name: POC API Sync
 
 on:
-  pull_request:
+  push:
     branches:
       - main
       - master
-    paths:
-      - 'sidebars.yaml'
-      - '**/sidebars.yaml' # Covers the file if it's in a subfolder
-  workflow_dispatch: # Allows you to still run it manually if needed
-
+      
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Service Repo
         uses: actions/checkout@v4
-        with:
-          # For PRs, we want to checkout the head of the PR branch
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Checkout Central Repo
         uses: actions/checkout@v4
@@ -29,25 +22,22 @@ jobs:
 
       - name: Copy and Push
         run: |
-          # Find the file wherever it is and copy it
-          FILE_PATH=$(find . -name "sidebars.yaml" -not -path "./api-reference/*" | head -n 1)
-          
-          if [ -z "$FILE_PATH" ]; then
+          mkdir -p api-reference/specs/
+          # Ensure sidebars.yaml exists before copying
+          if [ -f "sidebars.yaml" ]; then
+            cp sidebars.yaml api-reference/specs/service-alpha.yaml
+          else
             echo "sidebars.yaml not found!"
             exit 1
           fi
-
-          mkdir -p api-reference/specs/
-          cp "$FILE_PATH" api-reference/specs/service-alpha.yaml
           
           cd api-reference
           git config user.name "POC Bot"
           git config user.email "bot@poc.com"
           git add .
-          
           if git diff --quiet && git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "POC: Syncing spec from PR #${{ github.event.pull_request.number }}"
+            git commit -m "POC: Syncing service-alpha spec"
             git push
           fi
