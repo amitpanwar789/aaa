@@ -5,9 +5,7 @@ on:
     branches:
       - main
       - master
-    paths:
-      - '**/sidebars.yaml' # The double star means "find this file in any folder"
-  workflow_dispatch: # Keep this for safety
+      
 jobs:
   sync:
     runs-on: ubuntu-latest
