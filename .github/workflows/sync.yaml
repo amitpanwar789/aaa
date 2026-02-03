@@ -1,0 +1,37 @@
+name: POC API Sync
+
+on:
+  push:
+    branches:
+      - master  # This ensures it only runs on your "stable" branch
+    paths:
+      - 'sidebars.yaml'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Service Repo
+        uses: actions/checkout@v4
+
+      - name: Checkout Central Repo
+        uses: actions/checkout@v4
+        with:
+          repository: amitpanwar789/docs # <--- CHANGE THIS
+          token: ${{ secrets.CENTRAL_REPO_TOKEN }}
+          path: api-reference
+
+      - name: Copy and Push
+        run: |
+          mkdir -p api-reference/specs/
+          cp sidebars.yaml api-reference/service-alpha.yaml
+          cd api-reference
+          git config user.name "POC Bot"
+          git config user.email "bot@poc.com"
+          git add .
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "POC: Syncing service-alpha spec"
+            git push
+          fi
