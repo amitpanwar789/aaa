@@ -1,7 +1,7 @@
 - group: Flight Service
   page: /index.md
   items:
-    - group: Locations
+    - group: Locationsss
       directory: /locations
     - group: Flights Sales
       directory: /flights-sales
