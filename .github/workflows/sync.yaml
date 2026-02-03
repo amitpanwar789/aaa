@@ -1,9 +1,8 @@
 name: POC API Sync
 
 on:
-  push:
-    branches:
-      - '**'
+  push: # This makes it trigger on EVERY push to any branch/file
+  workflow_dispatch: # This adds a "Run workflow" button for manual testing
 
 jobs:
   sync:
@@ -15,14 +14,21 @@ jobs:
       - name: Checkout Central Repo
         uses: actions/checkout@v4
         with:
-          repository: amitpanwar789/docs # <--- CHANGE THIS
+          repository: amitpanwar789/docs
           token: ${{ secrets.CENTRAL_REPO_TOKEN }}
           path: api-reference
 
       - name: Copy and Push
         run: |
           mkdir -p api-reference/specs/
-          cp sidebars.yaml api-reference/service-alpha.yaml
+          # Ensure sidebars.yaml exists before copying
+          if [ -f "sidebars.yaml" ]; then
+            cp sidebars.yaml api-reference/specs/service-alpha.yaml
+          else
+            echo "sidebars.yaml not found!"
+            exit 1
+          fi
+          
           cd api-reference
           git config user.name "POC Bot"
           git config user.email "bot@poc.com"
