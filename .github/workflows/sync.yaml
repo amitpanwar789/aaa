@@ -3,9 +3,7 @@ name: POC API Sync
 on:
   push:
     branches:
-      - master  # This ensures it only runs on your "stable" branch
-    paths:
-      - 'sidebars.yaml'
+      - '**'
 
 jobs:
   sync:
