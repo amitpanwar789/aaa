@@ -1,9 +1,13 @@
 name: POC API Sync
 
 on:
-  push: # This makes it trigger on EVERY push to any branch/file
-  workflow_dispatch: # This adds a "Run workflow" button for manual testing
-
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - '**/sidebars.yaml' # The double star means "find this file in any folder"
+  workflow_dispatch: # Keep this for safety
 jobs:
   sync:
     runs-on: ubuntu-latest
