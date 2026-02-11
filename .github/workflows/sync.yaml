@@ -13,13 +13,21 @@ jobs:
       - name: Checkout Service Repo
         uses: actions/checkout@v4
 
+      # Generate a token using the GitHub App
+      - name: Generate Token
+        id: generate_token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - name: Checkout Central Repo
         uses: actions/checkout@v4
         with:
           repository: amitpanwar789/docs
-          token: ${{ secrets.CENTRAL_REPO_TOKEN }}
+          token: ${{ steps.generate_token.outputs.token }} # Use the App Token
           path: api-reference
-
+          
       - name: Copy and Push
         run: |
           mkdir -p api-reference/specs/
