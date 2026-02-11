@@ -20,6 +20,7 @@ jobs:
         with:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
+          repository: amitpanwar789/docs
 
       - name: Checkout Central Repo
         uses: actions/checkout@v4
