@@ -34,10 +34,22 @@ jobs:
           cd api-reference
           git config user.name "POC Bot"
           git config user.email "bot@poc.com"
+          
           git add .
-          if git diff --quiet && git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "POC: Syncing service-alpha spec"
-            git push
+          
+          if ! git diff --quiet && git diff --staged --quiet; then
+            git commit -m "POC: Syncing spec from PR"
+
+            for i in {1..3}; do
+              git fetch origin main
+              if git rebase origin/main; then
+                if git push origin main; then
+                  exit 0
+                fi
+              else
+                git rebase --abort
+              fi
+              sleep 5
+            done
+            exit 1
           fi
