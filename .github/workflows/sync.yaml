@@ -42,7 +42,7 @@ jobs:
         run: |
           mkdir -p api-reference/specs/
           # Ensure sidebars.yaml exists before copying
-          if [ -f "sidebars.yaml" ]; then
+          if [ -f "api/sidebars.yaml" ]; then
             cp sidebars.yaml api-reference/specs/service-alpha.yaml
           else
             echo "sidebars.yaml not found!"
