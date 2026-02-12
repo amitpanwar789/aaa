@@ -5,6 +5,14 @@ on:
     branches:
       - main
       - master
+
+
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Why are you running this sync manually?"
+        required: false
+        default: "manual trigger"
       
 jobs:
   sync:
@@ -20,8 +28,8 @@ jobs:
         with:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
-          repositories: >-
-            ["amitpanwar789/docs"]
+          # repositories: >-
+          #   ["amitpanwar789/docs"]
 
       - name: Checkout Central Repo
         uses: actions/checkout@v4
