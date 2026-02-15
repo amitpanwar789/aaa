@@ -14,7 +14,7 @@ on:
 
 jobs:
   call-sync:
-    uses: amitpanwar789/docs/.github/workflows/remote-sync-logic.yml@main
+    uses: amitpanwar789/docs/.github/workflows/remote-sync-logic.yaml@main
     with:
       service_name: ${{ github.event.repository.name }}
     secrets:
