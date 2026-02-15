@@ -17,6 +17,7 @@ jobs:
     uses: amitpanwar789/docs/.github/workflows/remote-sync-logic.yaml@main
     with:
       service_name: ${{ github.event.repository.name }}
+      spec_path: /account/travellers
     secrets:
       APP_ID: ${{ secrets.APP_ID }}
       APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
