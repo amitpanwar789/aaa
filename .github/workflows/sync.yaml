@@ -9,8 +9,7 @@ on:
     inputs:
       reason:
         description: "Why are you running this sync manually?"
-        required: false
-        default: "manual trigger"
+        required: true
 
 jobs:
   call-sync:
@@ -18,6 +17,8 @@ jobs:
     with:
       service_name: ${{ github.event.repository.name }}
       spec_path: /account/travellers
+      reason: ${{ github.event.inputs.reason }}
+      pr_id: ${{ github.event.pull_request.number }}
     secrets:
       APP_ID: ${{ secrets.APP_ID }}
       APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
