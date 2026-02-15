@@ -1,73 +1,22 @@
-name: POC API Sync
+name: Trigger Sync
 
 on:
   push:
-    branches:
-      - main
-      - master
-
-
+    branches: [master]
+    paths: ['api/sidebars.yaml']
+  
   workflow_dispatch:
     inputs:
       reason:
         description: "Why are you running this sync manually?"
         required: false
         default: "manual trigger"
-      
+
 jobs:
-  sync:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Service Repo
-        uses: actions/checkout@v4
-
-      # Generate a token using the GitHub App
-      - name: Generate Token
-        id: generate_token
-        uses: tibdex/github-app-token@v2
-        with:
-          app_id: ${{ secrets.APP_ID }}
-          private_key: ${{ secrets.APP_PRIVATE_KEY }}
-          # repositories: >-
-          #   ["amitpanwar789/docs"]
-
-      - name: Checkout Central Repo
-        uses: actions/checkout@v4
-        with:
-          repository: amitpanwar789/docs
-          token: ${{ steps.generate_token.outputs.token }} # Use the App Token
-          path: api-reference
-          
-      - name: Copy and Push
-        run: |
-          mkdir -p api-reference/specs/
-          # Ensure sidebars.yaml exists before copying
-          if [ -f "api/sidebars.yaml" ]; then
-            cp api/sidebars.yaml api-reference/specs/service-alpha.yaml
-          else
-            echo "sidebars.yaml not found!"
-            exit 1
-          fi
-          
-          cd api-reference
-          git config user.name "POC Bot"
-          git config user.email "bot@poc.com"
-          
-          git add .
-          
-          if ! git diff --quiet && git diff --staged --quiet; then
-            git commit -m "POC: Syncing spec from PR"
-
-            for i in {1..3}; do
-              git fetch origin main
-              if git rebase origin/main; then
-                if git push origin main; then
-                  exit 0
-                fi
-              else
-                git rebase --abort
-              fi
-              sleep 5
-            done
-            exit 1
-          fi
+  call-sync:
+    uses: amitpanwar789/docs/.github/workflows/remote-sync-logic.yml@main
+    with:
+      service_name: ${{ github.event.repository.name }}
+    secrets:
+      APP_ID: ${{ secrets.APP_ID }}
+      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
