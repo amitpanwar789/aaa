@@ -694,7 +694,6 @@ components:
           description: Fixed discriminator value.
         name:
           type: string
-          description: Name of the airport.
           example: Auckland International Airport
         city:
           type: string
