@@ -31,20 +31,20 @@ paths:
       tags: [Suggestions]
       operationId: getSuggestions
       summary: Get autosuggest results
-      description: >
-        Returns a list of autosuggest results (airports, cities, etc.)
-        based on the user query and filters.
-        For now, the service primarily supports airports and cities;
-        additional types are placeholders for forward compatibility.
+      # description: >
+      #   Returns a list of autosuggest results (airports, cities, etc.)
+      #   based on the user query and filters.
+      #   For now, the service primarily supports airports and cities;
+      #   additional types are placeholders for forward compatibility.
         
-         ### Contextual Headers
-        The following headers will be automatically injected by the API Gateway
-        - `X-User-Region`: ISO 3166-1 alpha-2 region code (e.g., IN)
-        - `X-User-Language`: user’s preferred language (e.g., en-IN)
-        - `X-User-Latitude`: user’s approximate latitude (decimal)
-        - `X-User-Longitude`: user’s approximate longitude (decimal)
+      #    ### Contextual Headers
+      #   The following headers will be automatically injected by the API Gateway
+      #   - `X-User-Region`: ISO 3166-1 alpha-2 region code (e.g., IN)
+      #   - `X-User-Language`: user’s preferred language (e.g., en-IN)
+      #   - `X-User-Latitude`: user’s approximate latitude (decimal)
+      #   - `X-User-Longitude`: user’s approximate longitude (decimal)
         
-        These headers will be used internally for personalization and proximity ranking.
+      #   These headers will be used internally for personalization and proximity ranking.
 
       parameters:
         - $ref: '#/components/parameters/XUserRegion'
