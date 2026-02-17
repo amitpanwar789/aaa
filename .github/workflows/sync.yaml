@@ -3,7 +3,7 @@ name: Trigger Sync
 on:
   push:
     branches: [master]
-    paths: ['api/sidebars.yaml']
+    paths: ['api/openapi.yaml']
   
   workflow_dispatch:
     inputs:
